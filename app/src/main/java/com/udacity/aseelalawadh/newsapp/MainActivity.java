@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 jsonString = sh.makeHttpRequset(createUrl(url));
             }
-              //  jsonString = sh.makeHttpRequest(createUrl(url));
              catch (IOException e) {
                 return null;
         }
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         newses.put("name", name);
 
 
-                        // adding a pokemon to our pokemon list
+                        // adding a news to our news list
                         newsList.add(newses);
                     }
                 } catch (final JSONException e) {
