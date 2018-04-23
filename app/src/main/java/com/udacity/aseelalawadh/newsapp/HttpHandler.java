@@ -1,11 +1,14 @@
 package com.udacity.aseelalawadh.newsapp;
 
+import android.util.Log;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by aseelalawadh on 23/04/2018.
@@ -14,10 +17,11 @@ import java.io.InputStreamReader;
 public class HttpHandler {
     public HttpHandler() {
     }
-    public String makeHttpRequset (URL url) throws IOException {
+
+    public String makeHttpRequset(URL url) throws IOException {
 
         String jsonResponse = "";
-        HttpsURLConnection urlConnection = null ;
+        HttpsURLConnection urlConnection = null;
         InputStream inputStream = null;
 
         try {
@@ -29,20 +33,21 @@ public class HttpHandler {
             inputStream = urlConnection.getInputStream();
             jsonResponse = convertStreamToString(inputStream);
 
-        }catch (IOException e) {
+        } catch (IOException e) {
 
         } finally {
-            if (urlConnection != null){
+            if (urlConnection != null) {
                 urlConnection.disconnect();
             }
-            if (inputStream != null){
+            if (inputStream != null) {
                 inputStream.close();
             }
-        return jsonResponse;
+            return jsonResponse;
         }
     }
 
-    private String convertStreamToString (InputStream is) {
+    private String convertStreamToString(InputStream is) {
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
 
@@ -59,8 +64,7 @@ public class HttpHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-    }
-
+        }
 
         return sb.toString();
     }
