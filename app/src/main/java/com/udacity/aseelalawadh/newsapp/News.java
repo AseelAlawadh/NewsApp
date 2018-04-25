@@ -6,21 +6,17 @@ package com.udacity.aseelalawadh.newsapp;
 
 public class News {
 
-    public final String section ;
+    public final String section;
     public final String date;
     public final String newsDetails;
+    public final String newsUrl;
 
-    public News(String section, String date, String newsDetails) {
+    public News(String section, String date, String newsDetails, String newsUrl) {
         this.section = section;
         this.date = date;
         this.newsDetails = newsDetails;
+        this.newsUrl = newsUrl;
     }
-
-//    public News(String id, String newsDetails) {
-//        this.id = id;
-//        this.newsDetails = newsDetails;
-//    }
-
 
     public String getSection() {
         return section;
@@ -32,5 +28,9 @@ public class News {
 
     public String getNewsDetails() {
         return newsDetails;
+    }
+
+    public String getNewsUrl() {
+        return newsUrl;
     }
 }
