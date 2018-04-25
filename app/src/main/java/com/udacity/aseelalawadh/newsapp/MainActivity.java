@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     /** URL to query the USGS dataset for earthquake information */
-    private static final String USGS_REQUEST_URL =
+    private static final String GUARDIAN_REQUEST_URL =
             "https://content.guardianapis.com/search?q=science&api-key=test";
 
     @Override
@@ -53,15 +53,14 @@ public class MainActivity extends AppCompatActivity {
      * Update the screen to display information from the given {@link News}.
      */
     private void updateUi(ArrayList<News> news) {
-        // Display the earthquake title in the UI
-        //TextView titleTextView = (TextView) findViewById(R.id.id);
-        //titleTextView.setText(newses.id);
 
-        // Display the earthquake date in the UI
-        //TextView dateTextView = (TextView) findViewById(R.id.news);
-        //titleTextView.setText(newses.newsDetails);
+        MainAdapter adapter = new MainAdapter(this, news);
+        list_view = findViewById(R.id.list);
+        list_view.setAdapter(adapter);
         Log.v(LOG_TAG, String.valueOf(news));
-        
+
+
+
     }
 
     /**
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected ArrayList<News> doInBackground(URL... urls) {
             // Create URL object
-            URL url = createUrl(USGS_REQUEST_URL);
+            URL url = createUrl(GUARDIAN_REQUEST_URL);
 
             // Perform HTTP request to the URL and receive a JSON response back
             String jsonResponse = "";
@@ -199,9 +198,10 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < resultsArray.length(); i++){
 
                     JSONObject item = resultsArray.getJSONObject(i);
-                    String id =  item.getString("id");
+                    String section = item.getString("sectionId");
+                    String date =  item.getString("webPublicationDate");
                     String webTitle = item.getString("webTitle");
-                    News newsItem = new News(id , webTitle);
+                    News newsItem = new News(section , date , webTitle);
                     newsList.add(newsItem);
 
                 }
