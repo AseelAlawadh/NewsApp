@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by aseelalawadh on 25/04/2018.
@@ -33,8 +34,13 @@ public class MainAdapter extends ArrayAdapter<News> {
 
         TextView newsDetails = listItemView.findViewById(R.id.news);
         newsDetails.setText(item.getNewsDetails());
+
         TextView newsUrl = listItemView.findViewById(R.id.newsUrl);
         newsUrl.setText(item.getNewsUrl());
+
+        TextView pillarName = listItemView.findViewById(R.id.pillarName);
+        pillarName.setText(item.getPillarName());
+
 
         return listItemView;
     }

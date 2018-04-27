@@ -10,12 +10,14 @@ public class News {
     public final String date;
     public final String newsDetails;
     public final String newsUrl;
+    public final String pillarName;
 
-    public News(String section, String date, String newsDetails, String newsUrl) {
+    public News(String section, String date, String newsDetails, String newsUrl, String pillarName) {
         this.section = section;
         this.date = date;
         this.newsDetails = newsDetails;
         this.newsUrl = newsUrl;
+        this.pillarName = pillarName;
     }
 
     public String getSection() {
@@ -32,5 +34,9 @@ public class News {
 
     public String getNewsUrl() {
         return newsUrl;
+    }
+
+    public String getPillarName() {
+        return pillarName;
     }
 }
