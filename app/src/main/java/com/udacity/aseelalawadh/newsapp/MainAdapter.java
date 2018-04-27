@@ -41,6 +41,8 @@ public class MainAdapter extends ArrayAdapter<News> {
         TextView pillarName = listItemView.findViewById(R.id.pillarName);
         pillarName.setText(item.getPillarName());
 
+        TextView authorName = listItemView.findViewById(R.id.authorName);
+        authorName.setText(item.getAuthorName());
 
         return listItemView;
     }

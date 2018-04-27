@@ -54,42 +54,42 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         setContentView(R.layout.activity_main);
 
         // Find a reference to the {@link ListView} in the layout
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        ListView newsListView = (ListView) findViewById(R.id.list);
 
         // Create a new adapter that takes an empty list of earthquakes as input
         mAdapter = new MainAdapter(this, new ArrayList<News>());
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(mAdapter);
+        newsListView.setAdapter(mAdapter);
 
         // Set an item click listener on the ListView, which sends an intent to a web browser
         // to open a website with more information about the selected earthquake.
-        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        newsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // Find the current earthquake that was clicked on
                 News currentNews = mAdapter.getItem(position);
 
                 // Convert the String URL into a URI object (to pass into the Intent constructor)
-                Uri earthquakeUri = Uri.parse(currentNews.getNewsUrl());
+                Uri newsUri = Uri.parse(currentNews.getNewsUrl());
 
                 // Create a new intent to view the earthquake URI
-                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, earthquakeUri);
+                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, newsUri);
 
                 // Send the intent to launch a new activity
                 startActivity(websiteIntent);
             }
         });
 
-        // Get a reference to the LoaderManager, in order to interact with loaders.
+       /* // Get a reference to the LoaderManager, in order to interact with loaders.
         LoaderManager loaderManager = getLoaderManager();
 
         // Initialize the loader. Pass in the int ID constant defined above and pass in null for
         // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
         // because this activity implements the LoaderCallbacks interface).
         loaderManager.initLoader(NEWS_LOADER_ID, null, this);
-       /* LoaderManager loaderManager = getLoaderManager();
+       *//* LoaderManager loaderManager = getLoaderManager();
         loaderManager.initLoader(NEWS_LOADER_ID,null,this);
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         list_view.setEmptyView(mEmptyStateTextView);*/
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
 
 
-       /*
+
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
                    }
 
 
-       *//* NewsAsyncTask task = new NewsAsyncTask();
+       /*/* NewsAsyncTask task = new NewsAsyncTask();
         task.execute();*/
     }
 
@@ -142,15 +142,20 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     public void onLoadFinished(Loader<List<News>> loader, List<News> newses) {
         // TODO: Update the UI with the result
         // Set empty state text to display "No earthquakes found."
+
+        View loadingIndicator = findViewById(R.id.loading_indicator);
+        loadingIndicator.setVisibility(View.GONE);
+
+        mEmptyStateTextView=findViewById(R.id.empty_view);
         mEmptyStateTextView.setText(R.string.no_news);
-        mAdapter .clear();
+        mAdapter.clear();
 
         if(newses != null && !newses.isEmpty()){
             mAdapter.addAll(newses);
 
         }
-        if (newses == null) {
-            return;
+       else if (newses == null) {
+            return  ;
         }
        // updateUi(newses);
 
@@ -205,9 +210,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         return url;
     }
 
-    /**
-     * Query the USGS dataset and return a list of {@link } objects.
-     */
+
     public static List<News> fetchNewsData(String requestUrl) {
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -296,18 +299,30 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
                 JSONArray resultsArray = response.getJSONArray("results");
                 ArrayList<News> newsList = new ArrayList<>();
+
+                JSONArray tagsArray = response.getJSONArray("tags");
+
                 for (int i = 0; i < resultsArray.length(); i++) {
 
-                    JSONObject item = resultsArray.getJSONObject(i);
-                    String section = item.getString("sectionId");
-                    String date = item.getString("webPublicationDate");
-                    String webTitle = item.getString("webTitle");
-                    String webUrl = item.getString("webUrl");
-                    String pillarName = item.getString("pillarName");
-                    News newsItem = new News(section, date, webTitle, webUrl, pillarName);
-                    newsList.add(newsItem);
-                }
 
+                        JSONObject item = resultsArray.getJSONObject(i);
+                        String section = item.getString("sectionId");
+                        String date = item.getString("webPublicationDate");
+                        String webTitle = item.getString("webTitle");
+                        String webUrl = item.getString("webUrl");
+                        String pillarName = item.getString("pillarName");
+
+                    for (int j = 0; j < tagsArray.length(); j++) {
+
+                        JSONObject itemTag = tagsArray.getJSONObject(i);
+                        String author = itemTag.getString("firstName" + "lastName");
+
+
+                        News newsItem = new News(section, date, webTitle, webUrl, pillarName, author);
+                        newsList.add(newsItem);
+                    }
+
+                }
                 Log.v(LOG_TAG, String.valueOf(newsList));
                 return newsList;
             } catch (JSONException e) {
