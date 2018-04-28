@@ -3,4 +3,13 @@
     <string name="link">Link</string>
     <string name="no_news">No news found.</string>
     <string name="no_internet_connection">No internet connection.</string>
+    <!-- Settings Menu Item [CHAR LIMIT=NONE] -->
+    <string name="settings_menu_item">Settings</string>
+    <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
+    <string name="settings_title"> News Settings</string>
+    <string name="settings_title_label">Title of the article</string>
+    <string name="settings_section_label">Section Name</string>
+    <string name="settings_author_label">Author name</string>
+    <string name="settings_min_magnitude_key" translatable="false">min_magnitude</string>
+    <string name="settings_min_magnitude_default" translatable="false">0</string>
 </resources>
