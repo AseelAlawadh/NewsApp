@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     private static final String GUARDIAN_REQUEST_URL =
             "http://content.guardianapis.com/search?order-by=newest&show-references=author&show-tags=contributor&q=Android&api-key=test";
     private static final int NEWS_LOADER_ID = 1;
-
+    private static final String TAG = "MainActivity";
     private TextView mEmptyStateTextView;
     private ListView list_view;
     private MainAdapter mAdapter;
@@ -43,7 +43,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initViews();
 
+
+    }
+
+    void initViews(){
         // Set the adapter on the  ListView so the list can be populated in the user interface
         mEmptyStateTextView = findViewById(R.id.empty_view);
         mEmptyStateTextView.setText(R.string.no_news);
@@ -59,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
                 startActivity(websiteIntent);
             }
         });
+    }
+    void reLoadData(){
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -77,6 +84,13 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
             mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
     }
+    @Override
+    public void onStart(){
+        super.onStart();
+        boolean meh = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_show_author), true);
+        Log.d(TAG, "onStart: "+meh);
+        this.reLoadData();
+    }
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
@@ -84,28 +98,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         return new NewsLoader(this, GUARDIAN_REQUEST_URL);
 */
 
-        SharedPreferences sharedPrefs =
-                PreferenceManager.getDefaultSharedPreferences(this);
 
-        // getString retrieves a String value from the preferences. The second parameter is the default value for this preference.
-        String minMagnitude = sharedPrefs.getString(
-                getString(R.string.settings_title_key),
-                getString(R.string.settings_title_default));
-
-        // parse breaks apart the URI string that's passed into its parameter
-        Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
-
-        // buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
-        Uri.Builder uriBuilder = baseUri.buildUpon();
-
-        // Append query parameter and its value. For example, the `format=geojson`
-        uriBuilder.appendQueryParameter("format", "geojson");
-        uriBuilder.appendQueryParameter("limit", "10");
-        uriBuilder.appendQueryParameter("minmag", minMagnitude);
-        uriBuilder.appendQueryParameter("orderby", "time");
-
-        // Return the completed uri `http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=10&minmag=minMagnitude&orderby=time
-        return new NewsLoader(this, uriBuilder.toString());
+        return new NewsLoader(this, GUARDIAN_REQUEST_URL);
 
     }
 

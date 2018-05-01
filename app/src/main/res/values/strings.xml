@@ -8,10 +8,24 @@
     <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
     <string name="settings_title"> News Settings</string>
     <string name="settings_title_label">Title of the article</string>
-    <string name="settings_title_key" translatable="false">min_magnitude</string>
+    <string name="settings_title_key" translatable="false">order by</string>
     <string name="settings_title_default" translatable="false">6</string>
-    <string name="settings_section_label">Section Name</string>
+    <string-array name="order">
+        <item>Title</item>
+        <item>Date</item>
+        <item>Authoe</item>
+    </string-array>
+    <string name="settings_webTitle_label">Section Name</string>
+    <string name="settings_date_label">Section Name</string>
     <string name="settings_author_label">Author name</string>
-    <string name="settings_min_magnitude_key" translatable="false">min_magnitude</string>
-    <string name="settings_min_magnitude_default" translatable="false">0</string>
+    <string name="title_activity_settings2">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <string name="pref_show_author">pref_show_author</string>
+    <string name="pref_show_title">pref_show_title</string>
+    <string name="pref_show_date">pref_show_date</string>
+    <string name="pref_show_all">pref_show_all</string>
+
+
 </resources>

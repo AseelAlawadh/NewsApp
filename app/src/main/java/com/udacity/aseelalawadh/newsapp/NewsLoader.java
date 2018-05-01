@@ -125,9 +125,9 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
                 String date = item.getString("webPublicationDate");
                 String webTitle = item.getString("webTitle");
                 String webUrl = item.getString("webUrl");
-                String pillarName = item.getString("pillarName");
+                //String pillarName = item.getString("pillarName");
                 JSONArray tagsArray = item.getJSONArray("tags");
-                News newsItem = new News(section, date, webTitle, webUrl, pillarName, null);
+                News newsItem = new News(section, date, webTitle, webUrl, null, null);
                 if (tagsArray != null && tagsArray.length() > 0) {
                     JSONObject itemTag = tagsArray.getJSONObject(0);
                     String firstName = itemTag.getString("firstName");

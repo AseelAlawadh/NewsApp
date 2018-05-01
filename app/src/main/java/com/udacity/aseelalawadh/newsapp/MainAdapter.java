@@ -1,5 +1,9 @@
 package com.udacity.aseelalawadh.newsapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +18,21 @@ import java.util.ArrayList;
 
 public class MainAdapter extends ArrayAdapter<News> {
 
-    public MainAdapter(MainActivity context, ArrayList<News> items) {
+    private SharedPreferences mSharedPref;
+    private Context mContext;
+    private TextView _authorName;
+    private TextView _newsSection;
+    private TextView _newsDate;
+    private TextView _newsDetails;
+
+    public MainAdapter(Context context, ArrayList<News> items) {
         super(context, 0, items);
+        mSharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        mContext = context;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View listItemView = convertView;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
@@ -26,25 +40,33 @@ public class MainAdapter extends ArrayAdapter<News> {
 
         News item = getItem(position);
 
-        TextView newsSection = listItemView.findViewById(R.id.section);
-        newsSection.setText(item.getSection());
+        _newsSection = listItemView.findViewById(R.id.section);
+        _newsSection.setText(String.valueOf(item == null ? "" : item.getSection()));
 
-        TextView newsDate = listItemView.findViewById(R.id.date);
-        newsDate.setText(item.getDate());
+        _newsDate = listItemView.findViewById(R.id.date);
+        _newsDate.setText(String.valueOf(""));
 
-        TextView newsDetails = listItemView.findViewById(R.id.news);
-        newsDetails.setText(item.getNewsDetails());
+        _newsDetails = listItemView.findViewById(R.id.news);
+        _newsDetails.setText(String.valueOf(item == null ? "" : item.getNewsDetails()));
 
-        TextView pillarName = listItemView.findViewById(R.id.pillarName);
-        pillarName.setText(item.getPillarName());
+        _authorName = listItemView.findViewById(R.id.authorName);
+        _authorName.setText(String.valueOf(""));
 
-        TextView authorName = listItemView.findViewById(R.id.authorName);
-        String authorNameValue = item.getAuthorName();
-        if (authorNameValue != null) {
-            authorName.setText(authorNameValue);
-        } else {
-            authorName.setText("");
+        if (item != null && item.getAuthorName() != null) {
+            _authorName.setText(String.valueOf(item.getAuthorName()));
         }
+        if (item != null && item.getDate() != null) {
+            _newsDate.setText(String.valueOf(item.getDate()));
+        }
+
+        validateSettings();
         return listItemView;
+    }
+
+
+    private void validateSettings() {
+        if (!mSharedPref.getBoolean(mContext.getString(R.string.pref_show_author), true)) {
+            _authorName.setVisibility(View.GONE);
+        }
     }
 }
