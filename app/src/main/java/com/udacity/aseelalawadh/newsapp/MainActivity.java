@@ -5,7 +5,6 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -44,11 +43,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-
-
     }
 
-    void initViews(){
+    void initViews() {
         // Set the adapter on the  ListView so the list can be populated in the user interface
         mEmptyStateTextView = findViewById(R.id.empty_view);
         mEmptyStateTextView.setText(R.string.no_news);
@@ -65,14 +62,15 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
             }
         });
     }
-    void reLoadData(){
+
+    void reLoadData() {
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
+            loadingIndicator.setVisibility(View.VISIBLE);
             LoaderManager loaderManager = getLoaderManager();
             loader = new NewsLoader(this, GUARDIAN_REQUEST_URL);
             loader.forceLoad();
@@ -84,23 +82,18 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
             mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
     }
+
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         boolean meh = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_show_author), true);
-        Log.d(TAG, "onStart: "+meh);
+        Log.d(TAG, "onStart: " + meh);
         this.reLoadData();
     }
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-      /*  loadingIndicator.setVisibility(View.VISIBLE);
         return new NewsLoader(this, GUARDIAN_REQUEST_URL);
-*/
-
-
-        return new NewsLoader(this, GUARDIAN_REQUEST_URL);
-
     }
 
     @Override

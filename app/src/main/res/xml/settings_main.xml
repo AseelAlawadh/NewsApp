@@ -2,35 +2,23 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings_title">
 
-
     <SwitchPreference
-
         android:defaultValue="false"
         android:key="@string/pref_show_all"
         android:title="Show " />
 
-
-    <CheckBoxPreference
-        android:id="@+id/title_check"
-        android:defaultValue="false"
-        android:dependency="@string/pref_show_all"
-        android:key="@string/pref_show_title"
-
-        android:title="Title" />
     <CheckBoxPreference
         android:id="@+id/author_check"
         android:defaultValue="false"
         android:dependency="@string/pref_show_all"
         android:key="@string/pref_show_author"
-
         android:title="Author" />
+
     <CheckBoxPreference
         android:id="@+id/date_check"
         android:defaultValue="false"
         android:dependency="@string/pref_show_all"
         android:key="@string/pref_show_date"
-
         android:title="Date" />
-
 
 </PreferenceScreen>

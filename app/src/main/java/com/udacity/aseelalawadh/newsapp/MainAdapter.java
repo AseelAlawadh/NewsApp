@@ -53,9 +53,11 @@ public class MainAdapter extends ArrayAdapter<News> {
         _authorName.setText(String.valueOf(""));
 
         if (item != null && item.getAuthorName() != null) {
+            _authorName.setVisibility(View.VISIBLE);
             _authorName.setText(String.valueOf(item.getAuthorName()));
         }
         if (item != null && item.getDate() != null) {
+            _newsDate.setVisibility(View.VISIBLE);
             _newsDate.setText(String.valueOf(item.getDate()));
         }
 
@@ -63,10 +65,12 @@ public class MainAdapter extends ArrayAdapter<News> {
         return listItemView;
     }
 
-
     private void validateSettings() {
         if (!mSharedPref.getBoolean(mContext.getString(R.string.pref_show_author), true)) {
             _authorName.setVisibility(View.GONE);
+        }
+        if (!mSharedPref.getBoolean(mContext.getString(R.string.pref_show_date), true)) {
+            _newsDate.setVisibility(View.GONE);
         }
     }
 }
